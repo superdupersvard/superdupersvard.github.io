@@ -2,7 +2,7 @@ import { getSelectedScale, getPaperSizeMeters, isMagneticNorth } from './map_pro
 import { isExportMode } from './export_mode.js';
 
 var lastExportCoordinate = null;
-var lastDeclination = null;
+var lastDeclination = 0;
 
 var rectangleLayer = new ol.layer.Vector({
     source: new ol.source.Vector(),
@@ -58,6 +58,7 @@ function updateRectangle() {
                 drawRectangleAt(lastExportCoordinate, declination);
             });
         } else {
+            lastDeclination = 0;
             drawRectangleAt(lastExportCoordinate, 0);
         }
     }
@@ -133,9 +134,10 @@ export function drawExportArea(coordinate) {
     if (isMagneticNorth()) {
         fetchDeclination(lonLat[0], lonLat[1], function(declination) {
             lastDeclination = declination;
-            drawRectangleAt(coordinate, declination);
+            drawRectangleAt(coordinate, lastDeclination);
         });
     } else {
+        lastDeclination = 0;
         drawRectangleAt(coordinate, 0);
     }
 }
