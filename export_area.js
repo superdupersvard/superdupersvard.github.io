@@ -113,8 +113,7 @@ export function calculateRectangleCoordinates(center3857, declinationDeg) {
     return rect3857;
 }
 
-// Rectangle drawing function, refactored to take coordinate and declination
-export function drawRectangleAt(center3857, declinationDeg) {
+function drawRectangleAt(center3857, declinationDeg) {
     rectangleLayer.getSource().clear();
 
     var rect3857 = calculateRectangleCoordinates(center3857, declinationDeg);
