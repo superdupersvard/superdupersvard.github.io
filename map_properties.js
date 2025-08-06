@@ -8,12 +8,12 @@ var orientation = document.getElementById('orientation-select');
 
 [northAlign, scaleSelect, customScaleInput, paperSelect, orientation].forEach(function(ctrl) {
     ctrl.addEventListener('change', function() {
-        document.dispatchEvent(new Event('rectangleUpdate'));
+        document.dispatchEvent(new Event('rectanglePropertiesUpdate'));
     });
 });
 
 customScaleInput.addEventListener('input', function() {
-    document.dispatchEvent(new Event('rectangleUpdate'));
+    document.dispatchEvent(new Event('rectanglePropertiesUpdate'));
 });
 
 // Show/hide custom scale input

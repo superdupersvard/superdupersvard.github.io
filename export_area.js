@@ -63,7 +63,7 @@ function updateRectangle() {
         }
     }
 }
-document.addEventListener('rectangleUpdate', updateRectangle);
+document.addEventListener('rectanglePropertiesUpdate', updateRectangle);
 
 // Calculate meters per degree longitude at the clicked latitude
 function metersTo3857Width(meters, latitude) {
