@@ -122,6 +122,8 @@ export function drawRectangleAt(center3857, declinationDeg) {
     var rect = new ol.geom.Polygon([rect3857]);
     var feature = new ol.Feature(rect);
     rectangleLayer.getSource().addFeature(feature);
+
+    document.dispatchEvent(new Event('rectangleUpdate'));
 }
 
 export function setExportArea(coordinate) {

@@ -312,14 +312,7 @@ document.body.appendChild(popup);
 map.on('singleclick', function(evt) {
     if (isExportMode()) {
         popup.style.display = 'none';
-
         drawExportArea(evt.coordinate);
-
-        updateRectangleTranslateInteraction();
-
-        // Reset button and mode if desired
-        //exportMode = false;
-        //exportBtn.classList.remove('pressed');
     } else {
         showPopupDialog(evt);
     }
@@ -347,4 +340,8 @@ function updateRectangleTranslateInteraction() {
         setExportArea(center);
     });
 }
+
+document.addEventListener('rectangleUpdate', function() {
+    updateRectangleTranslateInteraction();
+});
 
