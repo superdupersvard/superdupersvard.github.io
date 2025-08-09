@@ -37,6 +37,8 @@ function highlightStyle(feature, resolution) {
     });
 }
 
+const geojsonUrl = getGeojsonUrl();
+
 var map = new ol.Map({
     controls: ol.control.defaults.defaults().extend([mousePositionControl]),
     target: 'map',
@@ -79,7 +81,7 @@ var map = new ol.Map({
                 new ol.layer.Vector({
                     title: 'MTB Trails',
                     source: new ol.source.Vector({
-                        url: './trail_mtb.geojson',
+                        url: `${geojsonUrl}/trail_mtb.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
                     visible: false,
@@ -95,7 +97,7 @@ var map = new ol.Map({
                 new ol.layer.Vector({
                     title: 'Hiking Trails',
                     source: new ol.source.Vector({
-                        url: './trail_hiking.geojson',
+                        url: `${geojsonUrl}/trail_hiking.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
                     visible: false,
@@ -111,7 +113,7 @@ var map = new ol.Map({
                 new ol.layer.Vector({
                     title: 'Bicycle Trails',
                     source: new ol.source.Vector({
-                        url: './trail_bicycle.geojson',
+                        url: `${geojsonUrl}/trail_bicycle.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
                     visible: false,
@@ -132,7 +134,7 @@ var map = new ol.Map({
                 new ol.layer.Vector({
                     title: 'Naturreservat',
                     source: new ol.source.Vector({
-                        url: './naturreservat.geojson',
+                        url: `${geojsonUrl}/naturreservat.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
                     visible: false,
@@ -151,7 +153,7 @@ var map = new ol.Map({
                 new ol.layer.Vector({
                     title: 'Tillträdesförbud',
                     source: new ol.source.Vector({
-                        url: './tilltrade.geojson',
+                        url: `${geojsonUrl}/tilltrade.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
                     visible: true,
@@ -170,7 +172,7 @@ var map = new ol.Map({
                 new ol.layer.Vector({
                     title: 'Anmäld avverkning',
                     source: new ol.source.Vector({
-                        url: './anmaldavv.geojson',
+                        url: `${geojsonUrl}/anmaldavv.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
                     visible: false,
