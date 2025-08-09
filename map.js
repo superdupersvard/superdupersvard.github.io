@@ -1,6 +1,6 @@
 import { getRectangleLayer, isRectangleLayer, drawExportArea, setExportArea } from './export_area.js';
 import { isExportMode } from './export_mode.js';
-import { getTileUrl } from './server_settings.js';
+import { getTileUrl, getGeojsonUrl } from './server_settings.js';
 
 var mousePositionControl = new ol.control.MousePosition({
     className: 'custom-mouse-position',
