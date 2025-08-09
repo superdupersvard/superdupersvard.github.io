@@ -4,8 +4,8 @@ const backendBaseUrl = 'https://api.mtbokartan.se';
 const tileUrl = 'https://storage.googleapis.com/mtbo-map-tiles/Tiles/{z}/{x}/{-y}.webp';
 //const tileUrl = './tiles/{z}/{x}/{-y}.webp';
 
-const geojsonUrl = 'https://storage.googleapis.com/mtbo-map-tiles/GeoJSON/';
-// const geojsonUrl = './';
+const geojsonUrl = 'https://storage.googleapis.com/mtbo-map-tiles/GeoJSON';
+// const geojsonUrl = '.';
 
 export function getBackendBaseUrl() {
     return backendBaseUrl;
