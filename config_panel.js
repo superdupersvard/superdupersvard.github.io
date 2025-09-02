@@ -1,4 +1,8 @@
 export function showConfigPanel() {
+    // Populate form fields with current config values
+    document.getElementById('contour-interval').value = config.contour_interval;
+    document.getElementById('topo10-path').checked = config.topo10_path;
+    
     document.getElementById('config-panel').style.display = 'block';
 }
 
@@ -7,9 +11,8 @@ export function hideConfigPanel() {
 }
 
 let config = {
-    contour_interval: 10,
-    topo10_path: false,
-    osm_layers: []
+    contour_interval: 5,
+    topo10_path: true,
 };
 
 export function setMapConfig(newConfig) {
@@ -24,12 +27,10 @@ export function getMapConfig() {
 export function saveConfigFromPanel() {
     const contourInterval = document.getElementById('contour-interval').value;
     const topo10Path = document.getElementById('topo10-path').checked;
-    const osmLayers = document.getElementById('osm-layers').value.trim().split(/\s+/);
 
     setMapConfig({
         contour_interval: contourInterval,
-        topo10_path: topo10Path,
-        osm_layers: osmLayers
+        topo10_path: topo10Path
     });
 
     hideConfigPanel();
