@@ -1,16 +1,13 @@
 import { getExportArea, getDeclination } from './export_area.js';
 import { getPaperSizeMeters, getSelectedScale } from './map_properties.js';
-import { getMapConfig } from './config_panel.js';
-import { getFormat } from './map_properties.js';
 import { getBackendBaseUrl } from './server_settings.js';
 
-export function generateMap() {
+export function generateMap(export_config) {
     document.getElementById('loading-indicator').style.display = 'block';
     
     var paperSize = getPaperSizeMeters();
     var paperSizeMM = paperSize.map(function(size) { return size * 1000; });
     var scale = getSelectedScale();
-    var format = getFormat();
 
     var rect3857 = getExportArea();
     var minX = Math.min(rect3857[0][0], rect3857[1][0], rect3857[2][0], rect3857[3][0]);
@@ -29,15 +26,11 @@ export function generateMap() {
         paper_size: paperSizeMM,
         scale: scale,
         declination: getDeclination(),
-        format: format
     };
 
-    const map_config = getMapConfig();
-    data.contour_interval = map_config.contour_interval;
-    data.topo10_path = map_config.topo10_path;
-    //data.osmLayers = osmLayers;
-
-    console.log('Map config:', map_config);
+    data.format = export_config.image_format;
+    data.contour_interval = export_config.contour_interval;
+    data.topo10_path = export_config.topo10_path;
 
     const backendBaseUrl = getBackendBaseUrl();
     fetch(`${backendBaseUrl}/generate_map`, {

@@ -1,6 +1,5 @@
-import { showConfigPanel, hideConfigPanel, saveConfigFromPanel } from './config_panel.js';
 import { getTrailLayer } from './map.js';
-import { generateMap } from './generate_map.js';
+import './export_panel.js';
 
 document.getElementById('opacity').addEventListener('input', function(event) {
     var opacity = parseFloat(event.target.value);
@@ -28,15 +27,3 @@ overlayLayers.forEach(function(layer) {
         layer.on('change:visible', updateOpacitySliderVisibility);
     }
 });
-
-
-
-document.getElementById('generate-map-btn').addEventListener('click', generateMap);
-
-document.getElementById('open-config-btn').onclick = showConfigPanel;
-
-// Hide the panel when cancel is clicked
-document.getElementById('config-cancel-btn').onclick = hideConfigPanel;
-
-// Handle save: read values and use them in your app
-document.getElementById('config-save-btn').onclick = saveConfigFromPanel;

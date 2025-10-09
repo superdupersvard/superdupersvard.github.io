@@ -3,7 +3,6 @@ var scaleSelect = document.getElementById('scale-select');
 var customScaleInput = document.getElementById('custom-scale');
 var paperSelect = document.getElementById('paper-select');
 var customScalePrefix = document.getElementById('custom-scale-prefix');
-var formatSelect = document.getElementById('format-select');
 var orientation = document.getElementById('orientation-select');
 
 [northAlign, scaleSelect, customScaleInput, paperSelect, orientation].forEach(function(ctrl) {
@@ -60,8 +59,4 @@ export function getPaperSizeMeters() {
         height = tmp;
     }
     return [width, height];
-}
-
-export function getFormat() {
-    return formatSelect.value;
 }

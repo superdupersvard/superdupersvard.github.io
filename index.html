@@ -13,7 +13,7 @@
         #subheader { height: 12px; text-align: right; font-size: 10px; color: #555;}
         #map { height: 90%; border: 1px solid #888; }
         #export-btn.pressed { background: #0074d9; color: white; border: 2px solid #005fa3; }
-        #config-panel label { display: block; margin-bottom: 10px; }
+        #export-panel label { display: block; margin-bottom: 10px; }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@main/dist/en/v7.0.0/legacy/ol.css" type="text/css">
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@main/dist/en/v7.0.0/legacy/ol.js"></script>
@@ -80,14 +80,6 @@
                 <option value="portrait">Portrait</option>
                 <option value="landscape">Landscape</option>
             </select>
-            <label for="Format" style="font-size: 0.85em; margin-bottom: 2px;">Format:</label>
-            <select id="format-select">
-                <option value="tif">GeoTIFF</option>
-                <option value="png">PNG</option>
-                <option value="jpg">JPEG</option>
-                <option value="omap">OMAP</option>
-            </select>
-            <button id="open-config-btn" style="margin-left:20px;">⚙️ Config</button>
             <button id="generate-map-btn" style="margin-left:20px;">Generate Map</button>
         </div>
     </div>
@@ -97,8 +89,16 @@
         z-index: 9999; color: white; font-size: 2em; text-align: center; padding-top: 20%;">
         Generating map, please wait...
     </div>
-    <div id="config-panel" style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, 0); background:white; border:1px solid #ccc; padding:20px; z-index:10000; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
-        <h3>Map Configuration</h3>
+    <div id="export-panel" style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, 0); background:white; border:1px solid #ccc; padding:20px; z-index:10000; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
+        <h3>Export Configuration</h3>
+        <label for="image-format">Image Format:
+        <select id="image-format">
+            <option value="png">PNG</option>
+            <option value="jpg">JPEG</option>
+            <option value="tif">GeoTIFF</option>
+            <option value="omap">OMAP</option>
+        </select>
+        </label>
         <label for="contour-interval">Contour Interval:
         <select id="contour-interval">
             <option value="10">10</option>
@@ -110,8 +110,8 @@
         <input id="topo10-path" type="checkbox">
         </label>
         <br><br>
-        <button id="config-save-btn">Save</button>
-        <button id="config-cancel-btn">Cancel</button>
+        <button id="export-cancel-btn">Cancel</button>
+        <button id="export-generate-map-btn">Generate Map</button>
     </div>
     <div id="map" class="map"></div>
     <div class="opacity-slider" id="opacity-slider" style="display:none;">
