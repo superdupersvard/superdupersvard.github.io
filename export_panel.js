@@ -1,6 +1,12 @@
 import { generateMap } from './generate_map.js';
+import { hasExportArea } from './export_area.js';
 
 function showExportPanel() {
+    if (!hasExportArea()) {
+        alert('Click on the map to set an export area first.');
+        return;
+    }
+
     // Populate form fields with current config values
     document.getElementById('image-format').value = config.image_format;
     document.getElementById('contour-interval').value = config.contour_interval;

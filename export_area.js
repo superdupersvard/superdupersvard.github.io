@@ -156,3 +156,7 @@ export function getExportArea() {
 export function getDeclination() {
     return lastDeclination;
 }
+
+export function hasExportArea() {
+    return lastExportCoordinate !== null;
+}
