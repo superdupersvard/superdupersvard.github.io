@@ -7,6 +7,9 @@ var mousePositionControl = new ol.control.MousePosition({
     target: document.getElementById('mouse-position'),
     undefinedHTML: '&nbsp;'
 });
+function zoomToResolution(zoom) {
+    return 156543.03392804097 / Math.pow(2, zoom);
+}
 function getLineWidth(map) {
     var zoom = map.getView().getZoom();
     return zoom >= 17 ? 6 : (zoom == 16 ? 5 : zoom / 5);
@@ -35,6 +38,48 @@ function highlightStyle(feature, resolution) {
             width: 8
         })
     });
+}
+
+function topo10StrokeStyle(type, dashStyle = 'solid') {
+    return function(feature, resolution) {
+        var width = (type === 'path') ? 10 : 15;
+
+        var strokeConfig = {
+            color: 'black',
+            width: width / resolution,
+            lineCap: 'butt'
+        };
+
+        if (dashStyle === 'dashed') {
+            strokeConfig.lineDash = [75 / resolution, 12 / resolution];
+        }
+        else if (dashStyle === 'dotted') {
+            strokeConfig.lineDash = [12 / resolution, 12 / resolution];
+        }
+        
+        return new ol.style.Style({
+            stroke: new ol.style.Stroke(strokeConfig)
+        });
+    };
+}
+
+function topo10RoadStyle(feature, resolution) {
+    var pathType = feature.get('objekttyp');
+    
+    if (pathType === 'Traktorväg') {
+        return topo10StrokeStyle('road', 'dashed')(feature, resolution);
+    } else if (pathType === 'Cykelväg') {
+        return topo10StrokeStyle('path', 'solid')(feature, resolution);
+    } else if (pathType === 'Elljusspår') {
+        return topo10StrokeStyle('path', 'solid')(feature, resolution);
+    } else if (pathType === 'Parkväg') {
+        return topo10StrokeStyle('path', 'solid')(feature, resolution);
+    } else if (pathType === 'Gångstig') {
+        return topo10StrokeStyle('path', 'dashed')(feature, resolution);
+    }
+ 
+    // Default style
+    return topo10StrokeStyle('path', 'dotted')(feature, resolution);
 }
 
 const geojsonUrl = getGeojsonUrl();
@@ -74,6 +119,20 @@ var map = new ol.Map({
                 url: getTileUrl(),
                 tileSize: [256, 256]
             })
+        }),
+        new ol.layer.Group({
+            title: 'LM Topo10',
+            layers: [
+                new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        url: `${geojsonUrl}/topo10_missing_path.geojson`,
+                        format: new ol.format.GeoJSON()
+                    }),
+                    visible: true,
+                    maxResolution: zoomToResolution(14),
+                    style: topo10RoadStyle
+                })
+            ]
         }),
         new ol.layer.Group({
             title: 'Trails',
