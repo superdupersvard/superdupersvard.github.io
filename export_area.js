@@ -17,6 +17,10 @@ var rectangleLayer = new ol.layer.Vector({
     })
 });
 
+export function initExportArea(mapInstance) {
+    mapInstance.addLayer(rectangleLayer);
+}
+
 export function getRectangleLayer() {
     return rectangleLayer;
 }
@@ -129,9 +133,9 @@ export function setExportArea(coordinate) {
     lastExportCoordinate = coordinate;
 }
 
-export function drawExportArea(coordinate) {
+export function drawExportArea(coordinate, mapInstance) {
     lastExportCoordinate = coordinate;
-    var lonLat = ol.proj.toLonLat(coordinate, 'EPSG:3857');
+    var lonLat = ol.proj.toLonLat(coordinate, mapInstance.getView().getProjection());
     if (isMagneticNorth()) {
         fetchDeclination(lonLat[0], lonLat[1], function(declination) {
             lastDeclination = declination;

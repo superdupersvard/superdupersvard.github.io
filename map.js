@@ -1,4 +1,4 @@
-import { getRectangleLayer, isRectangleLayer, drawExportArea, setExportArea } from './export_area.js';
+import { initExportArea, getRectangleLayer, isRectangleLayer, drawExportArea, setExportArea } from './export_area.js';
 import { isExportMode } from './export_mode.js';
 import { getTileUrl, getGeojsonUrl } from './server_settings.js';
 
@@ -256,8 +256,8 @@ var map = new ol.Map({
     })
 });
 
+initExportArea(map);
 map.addControl(new ol.control.LayerSwitcher());
-map.addLayer(getRectangleLayer());
 
 var trailLayerTitles = ['MTB Trails', 'Hiking Trails', 'Bicycle Trails'];
 var selectInteraction = new ol.interaction.Select({
@@ -373,7 +373,7 @@ document.body.appendChild(popup);
 map.on('singleclick', function(evt) {
     if (isExportMode()) {
         popup.style.display = 'none';
-        drawExportArea(evt.coordinate);
+        drawExportArea(evt.coordinate, map);
     } else {
         showPopupDialog(evt);
     }
