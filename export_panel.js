@@ -14,6 +14,8 @@ function showExportPanel() {
     document.getElementById('image-format').value = config.imageFormat;
     document.getElementById('contour-interval').value = config.contourInterval;
     document.getElementById('exportTopo10').checked = getLayerVisibility('topo10Visible');
+    document.getElementById('exportTilltrades').checked = getLayerVisibility('tilltradesforbud');
+    document.getElementById('exportPlannedLogging').checked = getLayerVisibility('plannedLoggingVisible');
 
     document.getElementById('export-panel').style.display = 'block';
 }
@@ -28,6 +30,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('export-generate-map-btn').addEventListener('click', generateMap);
     document.getElementById('exportTopo10').addEventListener('change', function(event) {
         setLayerVisibility('topo10Visible', event.target.checked);
+    });
+    document.getElementById('exportTilltrades').addEventListener('change', function(event) {
+        setLayerVisibility('tilltradesforbud', event.target.checked);
+    });
+    document.getElementById('exportPlannedLogging').addEventListener('change', function(event) {
+        setLayerVisibility('plannedLoggingVisible', event.target.checked);
     });
 
     // Subscribe to state changes to update the checkbox

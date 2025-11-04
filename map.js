@@ -94,7 +94,7 @@ function addLayerChangeListeners() {
         'Bicycle Trails': 'bicycleTrailsVisible',
         'Naturreservat': 'naturreservatVisible',
         'Tillträdesförbud': 'tilltradesforbud',
-        'Anmäld avverkning': 'anmaldAvverkningVisible'
+        'Anmäld avverkning': 'plannedLoggingVisible'
     };
 
     map.getLayers().forEach(function(layer) {
@@ -130,7 +130,7 @@ subscribe((state, path, value) => {
             'bicycleTrailsVisible': 'Bicycle Trails',
             'naturreservatVisible': 'Naturreservat',
             'tilltradesforbud': 'Tillträdesförbud',
-            'anmaldAvverkningVisible': 'Anmäld avverkning'
+            'plannedLoggingVisible': 'Anmäld avverkning'
         };
         
         const layerTitle = reverseMappings[layerKey];
@@ -305,7 +305,7 @@ var map = new ol.Map({
                         url: `${geojsonUrl}/anmaldavv.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
-                    visible: getLayerVisibility('anmaldAvverkningVisible'),
+                    visible: getLayerVisibility('plannedLoggingVisible'),
                     style: function(feature, resolution) {
                         return new ol.style.Style({
                             stroke: new ol.style.Stroke({

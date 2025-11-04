@@ -11,13 +11,12 @@ let appState = {
     },
     layers: {
         topo10Visible: true,
-        trailsVisible: false,
         mtbTrailsVisible: false,
         hikingTrailsVisible: false,
         bicycleTrailsVisible: false,
         naturreservatVisible: false,
         tilltradesforbud: true,
-        anmaldAvverkningVisible: false
+        plannedLoggingVisible: false
     }
 };
 
