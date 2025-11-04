@@ -1,3 +1,4 @@
+import { getLayerVisibility, setLayerVisibility, subscribe } from './state_manager.js';
 import { initExportArea, getRectangleLayer, isRectangleLayer, drawExportArea, setExportArea } from './export_area.js';
 import { isExportMode } from './export_mode.js';
 import { getTileUrl, getGeojsonUrl } from './server_settings.js';
@@ -84,6 +85,76 @@ function topo10RoadStyle(feature, resolution) {
 
 const geojsonUrl = getGeojsonUrl();
 
+// Add layer change listeners to update state when layers change
+function addLayerChangeListeners() {
+    const layerMappings = {
+        'LM Topo10': 'topo10Visible',
+        'MTB Trails': 'mtbTrailsVisible',
+        'Hiking Trails': 'hikingTrailsVisible', 
+        'Bicycle Trails': 'bicycleTrailsVisible',
+        'Naturreservat': 'naturreservatVisible',
+        'Tillträdesförbud': 'tilltradesforbud',
+        'Anmäld avverkning': 'anmaldAvverkningVisible'
+    };
+
+    map.getLayers().forEach(function(layer) {
+        const title = layer.get('title');
+        
+        if (layerMappings[title]) {
+            // For regular layers
+            layer.on('change:visible', function() {
+                setLayerVisibility(layerMappings[title], layer.getVisible());
+            });
+        } else if (layer.getLayers) {
+            // For layer groups, listen to their children
+            layer.getLayers().forEach(function(childLayer) {
+                const childTitle = childLayer.get('title');
+                if (layerMappings[childTitle]) {
+                    childLayer.on('change:visible', function() {
+                        setLayerVisibility(layerMappings[childTitle], childLayer.getVisible());
+                    });
+                }
+            });
+        }
+    });
+}
+
+// Subscribe to state changes to update map layers
+subscribe((state, path, value) => {
+    if (path.startsWith('layers.')) {
+        const layerKey = path.split('.')[1];
+        const reverseMappings = {
+            'topo10Visible': 'LM Topo10',
+            'mtbTrailsVisible': 'MTB Trails',
+            'hikingTrailsVisible': 'Hiking Trails', 
+            'bicycleTrailsVisible': 'Bicycle Trails',
+            'naturreservatVisible': 'Naturreservat',
+            'tilltradesforbud': 'Tillträdesförbud',
+            'anmaldAvverkningVisible': 'Anmäld avverkning'
+        };
+        
+        const layerTitle = reverseMappings[layerKey];
+        if (layerTitle) {
+            updateMapLayerVisibility(layerTitle, value);
+        }
+    }
+}, 'layers');
+
+function updateMapLayerVisibility(layerTitle, visible) {
+    map.getLayers().forEach(function(layer) {
+        if (layer.get('title') === layerTitle) {
+            layer.setVisible(visible);
+        } else if (layer.getLayers) {
+            // Check child layers in groups
+            layer.getLayers().forEach(function(childLayer) {
+                if (childLayer.get('title') === layerTitle) {
+                    childLayer.setVisible(visible);
+                }
+            });
+        }
+    });
+}
+
 var map = new ol.Map({
     controls: ol.control.defaults.defaults().extend([mousePositionControl]),
     target: 'map',
@@ -128,7 +199,7 @@ var map = new ol.Map({
                         url: `${geojsonUrl}/topo10_missing_path.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
-                    visible: true,
+                    visible: getLayerVisibility('topo10Visible'),
                     maxResolution: zoomToResolution(14),
                     style: topo10RoadStyle
                 })
@@ -143,7 +214,7 @@ var map = new ol.Map({
                         url: `${geojsonUrl}/trail_mtb.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
-                    visible: false,
+                    visible: getLayerVisibility('mtbTrailsVisible'),
                     style: function(feature, resolution) {
                         return new ol.style.Style({
                             stroke: new ol.style.Stroke({
@@ -159,7 +230,7 @@ var map = new ol.Map({
                         url: `${geojsonUrl}/trail_hiking.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
-                    visible: false,
+                    visible: getLayerVisibility('hikingTrailsVisible'),
                     style: function(feature, resolution) {
                         return new ol.style.Style({
                             stroke: new ol.style.Stroke({
@@ -175,7 +246,7 @@ var map = new ol.Map({
                         url: `${geojsonUrl}/trail_bicycle.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
-                    visible: false,
+                    visible: getLayerVisibility('bicycleTrailsVisible'),
                     style: function(feature, resolution) {
                         return new ol.style.Style({
                             stroke: new ol.style.Stroke({
@@ -196,7 +267,7 @@ var map = new ol.Map({
                         url: `${geojsonUrl}/naturreservat.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
-                    visible: false,
+                    visible: getLayerVisibility('naturreservatVisible'),
                     style: function(feature, resolution) {
                         return new ol.style.Style({
                             stroke: new ol.style.Stroke({
@@ -215,7 +286,7 @@ var map = new ol.Map({
                         url: `${geojsonUrl}/tilltrade.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
-                    visible: true,
+                    visible: getLayerVisibility('tilltradesforbud'),
                     style: function(feature, resolution) {
                         return new ol.style.Style({
                             stroke: new ol.style.Stroke({
@@ -234,7 +305,7 @@ var map = new ol.Map({
                         url: `${geojsonUrl}/anmaldavv.geojson`,
                         format: new ol.format.GeoJSON()
                     }),
-                    visible: false,
+                    visible: getLayerVisibility('anmaldAvverkningVisible'),
                     style: function(feature, resolution) {
                         return new ol.style.Style({
                             stroke: new ol.style.Stroke({
@@ -258,6 +329,8 @@ var map = new ol.Map({
 
 initExportArea(map);
 map.addControl(new ol.control.LayerSwitcher());
+
+addLayerChangeListeners();
 
 var trailLayerTitles = ['MTB Trails', 'Hiking Trails', 'Bicycle Trails'];
 var selectInteraction = new ol.interaction.Select({
@@ -296,7 +369,7 @@ map.on('pointermove', function(evt) {
     }
 });
 
-export function showPopupDialog(evt) {
+function showPopupDialog(evt) {
     var foundFeatures = [];
     var trailFeatures = [];
     map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {

@@ -1,5 +1,6 @@
 import { getTrailLayer } from './map.js';
 import './export_panel.js';
+import './map_properties.js';
 
 document.getElementById('opacity').addEventListener('input', function(event) {
     var opacity = parseFloat(event.target.value);

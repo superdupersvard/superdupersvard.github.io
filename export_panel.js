@@ -1,5 +1,6 @@
 import { generateMap } from './generate_map.js';
 import { hasExportArea } from './export_area.js';
+import { getExportConfig, getLayerVisibility, setLayerVisibility, subscribe } from './state_manager.js';
 
 function showExportPanel() {
     if (!hasExportArea()) {
@@ -7,11 +8,13 @@ function showExportPanel() {
         return;
     }
 
+    const config = getExportConfig();
+
     // Populate form fields with current config values
-    document.getElementById('image-format').value = config.image_format;
-    document.getElementById('contour-interval').value = config.contour_interval;
-    document.getElementById('topo10-path').checked = config.topo10_path;
-    
+    document.getElementById('image-format').value = config.imageFormat;
+    document.getElementById('contour-interval').value = config.contourInterval;
+    document.getElementById('exportTopo10').checked = getLayerVisibility('topo10Visible');
+
     document.getElementById('export-panel').style.display = 'block';
 }
 
@@ -19,31 +22,21 @@ function hideExportPanel() {
     document.getElementById('export-panel').style.display = 'none';
 }
 
-let config = {
-    image_format: 'png',
-    contour_interval: 5,
-    topo10_path: true,
-};
-
-function saveConfig() {
-    const imageFormat = document.getElementById('image-format').value;
-    const contourInterval = document.getElementById('contour-interval').value;
-    const topo10Path = document.getElementById('topo10-path').checked;
-
-    config = {
-        image_format: imageFormat,
-        contour_interval: contourInterval,
-        topo10_path: topo10Path
-    };
-
-    hideExportPanel();
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('generate-map-btn').addEventListener('click', showExportPanel);
     document.getElementById('export-cancel-btn').addEventListener('click', hideExportPanel);
-    document.getElementById('export-generate-map-btn').addEventListener('click', function() {
-        saveConfig();
-        generateMap(config);
+    document.getElementById('export-generate-map-btn').addEventListener('click', generateMap);
+    document.getElementById('exportTopo10').addEventListener('change', function(event) {
+        setLayerVisibility('topo10Visible', event.target.checked);
     });
+
+    // Subscribe to state changes to update the checkbox
+    subscribe((state, path, value) => {
+        if (path === 'layers.topo10Visible') {
+            const checkbox = document.getElementById('exportTopo10');
+            if (checkbox) {
+                checkbox.checked = value;
+            }
+        }
+    }, 'layers.topo10Visible');
 });

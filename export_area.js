@@ -1,4 +1,4 @@
-import { getSelectedScale, getPaperSizeMeters, isMagneticNorth } from './map_properties.js';
+import { getSelectedScale, getPaperSizeMeters, isMagneticNorth } from './state_manager.js';
 import { isExportMode } from './export_mode.js';
 
 var lastExportCoordinate = null;

@@ -1,8 +1,8 @@
 import { getExportArea, getDeclination } from './export_area.js';
-import { getPaperSizeMeters, getSelectedScale } from './map_properties.js';
+import { getPaperSizeMeters, getSelectedScale, getExportConfig, getLayerVisibility } from './state_manager.js';
 import { getBackendBaseUrl } from './server_settings.js';
 
-export function generateMap(export_config) {
+export function generateMap() {
     document.getElementById('loading-indicator').style.display = 'block';
     
     var paperSize = getPaperSizeMeters();
@@ -28,9 +28,10 @@ export function generateMap(export_config) {
         declination: getDeclination(),
     };
 
-    data.format = export_config.image_format;
-    data.contour_interval = export_config.contour_interval;
-    data.topo10_path = export_config.topo10_path;
+    const config = getExportConfig();
+    data.format = config.imageFormat;
+    data.contour_interval = config.contourInterval;
+    data.topo10_path = getLayerVisibility('topo10Visible');
 
     const backendBaseUrl = getBackendBaseUrl();
     fetch(`${backendBaseUrl}/generate_map`, {
