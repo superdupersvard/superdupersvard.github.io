@@ -27,7 +27,10 @@ function hideExportPanel() {
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('generate-map-btn').addEventListener('click', showExportPanel);
     document.getElementById('export-cancel-btn').addEventListener('click', hideExportPanel);
-    document.getElementById('export-generate-map-btn').addEventListener('click', generateMap);
+    document.getElementById('export-generate-map-btn').addEventListener('click', function(event) {
+        hideExportPanel();
+        generateMap();
+    });
     document.getElementById('exportTopo10').addEventListener('change', function(event) {
         setLayerVisibility('topo10Visible', event.target.checked);
     });
