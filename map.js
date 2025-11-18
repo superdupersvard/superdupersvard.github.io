@@ -182,7 +182,6 @@ var map = new ol.Map({
         }),
         new ol.layer.Tile({
             title: 'Overlay',
-            extent: [1369749.291943, 7411510.649722, 1643702.937997, 7690177.710994],
             source: new ol.source.XYZ({
                 attributions: '',
                 minZoom: 7,
