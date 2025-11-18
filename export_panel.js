@@ -1,6 +1,6 @@
 import { generateMap } from './generate_map.js';
 import { hasExportArea } from './export_area.js';
-import { getExportConfig, getLayerVisibility, setLayerVisibility, subscribe } from './state_manager.js';
+import { getExportConfig, getLayerVisibility, setLayerVisibility, setState, subscribe } from './state_manager.js';
 
 function showExportPanel() {
     if (!hasExportArea()) {
@@ -39,6 +39,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     document.getElementById('exportPlannedLogging').addEventListener('change', function(event) {
         setLayerVisibility('plannedLoggingVisible', event.target.checked);
+    });
+
+    document.getElementById('image-format').addEventListener('change', function(event) {
+        setState('export.imageFormat', event.target.value);
+    });
+    document.getElementById('contour-interval').addEventListener('change', function(event) {
+        setState('export.contourInterval', event.target.value);
     });
 
     // Subscribe to state changes to update the checkbox
