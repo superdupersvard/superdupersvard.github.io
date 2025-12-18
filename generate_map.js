@@ -36,7 +36,7 @@ export function generateMap() {
     data.planned_logging = getLayerVisibility('plannedLoggingVisible');
 
     const backendBaseUrl = getBackendBaseUrl();
-    fetch(`${backendBaseUrl}/generate_map`, {
+    fetch(`${backendBaseUrl}/api/generate_map`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
