@@ -14,12 +14,7 @@ export function generateMap() {
     var maxX = Math.max(rect3857[0][0], rect3857[1][0], rect3857[2][0], rect3857[3][0]);
     var minY = Math.min(rect3857[0][1], rect3857[1][1], rect3857[2][1], rect3857[3][1]);
     var maxY = Math.max(rect3857[0][1], rect3857[1][1], rect3857[2][1], rect3857[3][1]);
-    var boundary = [
-        [minX, minY],
-        [maxX, minY],
-        [maxX, maxY],
-        [minX, maxY]
-    ];
+    var boundary = [minX, minY, maxX, maxY];
 
     var data = {
         boundary: boundary,
