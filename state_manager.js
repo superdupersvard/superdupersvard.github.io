@@ -10,7 +10,7 @@ let appState = {
         contourInterval: 5,
     },
     layers: {
-        topo10Visible: true,
+        topo10Visible: false,
         mtbTrailsVisible: false,
         hikingTrailsVisible: false,
         bicycleTrailsVisible: false,
