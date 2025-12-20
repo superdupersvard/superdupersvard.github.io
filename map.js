@@ -149,6 +149,11 @@ function updateMapLayerVisibility(layerTitle, visible) {
             layer.getLayers().forEach(function(childLayer) {
                 if (childLayer.get('title') === layerTitle) {
                     childLayer.setVisible(visible);
+
+                    // If making child visible, also make parent group visible
+                    if (visible) {
+                        layer.setVisible(true);
+                    }
                 }
             });
         }
@@ -190,19 +195,15 @@ var map = new ol.Map({
                 tileSize: [256, 256]
             })
         }),
-        new ol.layer.Group({
+        new ol.layer.Vector({
             title: 'LM Topo10',
-            layers: [
-                new ol.layer.Vector({
-                    source: new ol.source.Vector({
-                        url: `${geojsonUrl}/topo10_missing_path.geojson`,
-                        format: new ol.format.GeoJSON()
-                    }),
-                    visible: getLayerVisibility('topo10Visible'),
-                    maxResolution: zoomToResolution(14),
-                    style: topo10RoadStyle
-                })
-            ]
+            source: new ol.source.Vector({
+                url: `${geojsonUrl}/topo10_missing_path.geojson`,
+                format: new ol.format.GeoJSON()
+            }),
+            visible: getLayerVisibility('topo10Visible'),
+            maxResolution: zoomToResolution(14),
+            style: topo10RoadStyle
         }),
         new ol.layer.Group({
             title: 'Trails',

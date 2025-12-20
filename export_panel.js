@@ -31,14 +31,24 @@ document.addEventListener('DOMContentLoaded', function() {
         hideExportPanel();
         generateMap();
     });
-    document.getElementById('exportTopo10').addEventListener('change', function(event) {
-        setLayerVisibility('topo10Visible', event.target.checked);
-    });
-    document.getElementById('exportTilltrades').addEventListener('change', function(event) {
-        setLayerVisibility('tilltradesforbud', event.target.checked);
-    });
-    document.getElementById('exportPlannedLogging').addEventListener('change', function(event) {
-        setLayerVisibility('plannedLoggingVisible', event.target.checked);
+
+    // Checkbox to state mappings
+    const checkboxStateMapping = {
+        'exportTopo10': 'topo10Visible',
+        'exportTilltrades': 'tilltradesforbud',
+        'exportPlannedLogging': 'plannedLoggingVisible'
+    };
+
+    // Setup change listeners for all checkboxes
+    Object.keys(checkboxStateMapping).forEach(checkboxId => {
+        const checkbox = document.getElementById(checkboxId);
+        const stateKey = checkboxStateMapping[checkboxId];
+        
+        if (checkbox) {
+            checkbox.addEventListener('change', function(event) {
+                setLayerVisibility(stateKey, event.target.checked);
+            });
+        }
     });
 
     document.getElementById('image-format').addEventListener('change', function(event) {
@@ -48,13 +58,18 @@ document.addEventListener('DOMContentLoaded', function() {
         setState('export.contourInterval', event.target.value);
     });
 
-    // Subscribe to state changes to update the checkbox
+    // Subscribe to all layer state changes to update checkboxes
     subscribe((state, path, value) => {
-        if (path === 'layers.topo10Visible') {
-            const checkbox = document.getElementById('exportTopo10');
+        // Find checkbox that corresponds to this layer path
+        const checkboxId = Object.keys(checkboxStateMapping).find(
+            id => 'layers.' + checkboxStateMapping[id] === path
+        );
+        
+        if (checkboxId) {
+            const checkbox = document.getElementById(checkboxId);
             if (checkbox) {
                 checkbox.checked = value;
             }
         }
-    }, 'layers.topo10Visible');
+    }, 'layers');
 });
