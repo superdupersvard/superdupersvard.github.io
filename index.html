@@ -91,6 +91,12 @@
     </div>
     <div id="export-panel" style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, 0); background:white; border:1px solid #ccc; padding:20px; z-index:10000; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
         <h3>Export Configuration</h3>
+        <label for="osm-interface">OSM Interface:
+        <select id="osm-interface">
+            <option value="pbf">Buffered</option>
+            <option value="overpass">OSM server</option>
+        </select>
+        </label>
         <label for="image-format">Image Format:
         <select id="image-format">
             <option value="png">PNG</option>

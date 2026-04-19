@@ -26,6 +26,7 @@ export function generateMap() {
     const config = getExportConfig();
     data.format = config.imageFormat;
     data.contour_interval = config.contourInterval;
+    data.osm_interface = config.osm_interface;
     data.topo10_path = getLayerVisibility('topo10Visible');
     data.tilltradesforbud = getLayerVisibility('tilltradesforbud');
     data.planned_logging = getLayerVisibility('plannedLoggingVisible');

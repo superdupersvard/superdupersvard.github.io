@@ -8,6 +8,7 @@ let appState = {
     export: {
         imageFormat: 'png',
         contourInterval: 5,
+        osm_interface: 'pbf'
     },
     layers: {
         topo10Visible: false,

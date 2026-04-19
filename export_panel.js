@@ -51,6 +51,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    document.getElementById('osm-interface').addEventListener('change', function(event) {
+        setState('export.osm_interface', event.target.value);
+    });
     document.getElementById('image-format').addEventListener('change', function(event) {
         setState('export.imageFormat', event.target.value);
     });
